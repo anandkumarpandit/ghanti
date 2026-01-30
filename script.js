@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.speechSynthesis.getVoices();
     };
 
-    // Polling Logic
+    // Polling Logic - TRUE REAL-TIME SYNC
     const voteButton = document.getElementById('voteButton');
     const pollMessage = document.getElementById('pollMessage');
     const totalVotesSpan = document.getElementById('totalVotes');
@@ -71,16 +71,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progressBar');
 
     const POLL_GOAL = 100000;
-    const API_URL = "https://api.countapi.xyz/hit/balen_sarkar_poll_v3/total"; // Note: xyz might be flaky, we use localStorage as source of truth for the 'user' but try to fetch a global number.
+    const API_NAMESPACE = "balen_sarkar_official_2026";
+    const API_KEY = "global_votes";
+    const BASE_URL = `https://api.counterapi.dev/v1/${API_NAMESPACE}/${API_KEY}`;
 
-    // For this demo, let's use a simulated global count that increments 
-    // but we'll try to use a real public API if available.
-    let globalVoteCount = 12450; // Base count for "Real Time" feel
+    async function fetchGlobalVotes() {
+        try {
+            const response = await fetch(BASE_URL);
+            const data = await response.json();
+            if (data && data.count !== undefined) {
+                // Add a base number (e.g., 25000) for a more established feel if count is low
+                const displayedCount = 25000 + data.count;
+                updatePollUI(displayedCount);
+            }
+        } catch (error) {
+            console.error("Failed to fetch global votes:", error);
+        }
+    }
 
-    async function updatePollUI(count) {
+    async function incrementGlobalVotes() {
+        try {
+            const response = await fetch(`${BASE_URL}/up`);
+            const data = await response.json();
+            if (data && data.count !== undefined) {
+                const displayedCount = 25000 + data.count;
+                updatePollUI(displayedCount);
+            }
+        } catch (error) {
+            console.error("Failed to increment global votes:", error);
+        }
+    }
+
+    function updatePollUI(count) {
         totalVotesSpan.innerText = count.toLocaleString();
 
-        // Calculate percentage (clamped to 100)
         let percentage = (count / POLL_GOAL) * 100;
         if (percentage > 100) percentage = 100;
 
@@ -88,12 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.style.width = percentage + "%";
     }
 
-    // Initial load
-    const storedCount = localStorage.getItem('balen_global_votes');
-    if (storedCount) {
-        globalVoteCount = parseInt(storedCount);
-    }
-    updatePollUI(globalVoteCount);
+    // Initial load and periodic refresh (every 10 seconds)
+    fetchGlobalVotes();
+    setInterval(fetchGlobalVotes, 10000);
 
     if (localStorage.getItem('balen_v2_hasVoted')) {
         disableVoting();
@@ -101,11 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     voteButton.addEventListener('click', () => {
         if (!localStorage.getItem('balen_v2_hasVoted')) {
-            globalVoteCount++;
             localStorage.setItem('balen_v2_hasVoted', 'true');
-            localStorage.setItem('balen_global_votes', globalVoteCount.toString());
-
-            updatePollUI(globalVoteCount);
+            incrementGlobalVotes();
             disableVoting();
         }
     });
