@@ -131,6 +131,45 @@ body {
     font-size: 1.5rem;
 }
 
+.live-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffebee;
+    color: #e74c3c;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #e74c3c;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .poll-option {
     background: #f8f9fa;
     padding: 15px;

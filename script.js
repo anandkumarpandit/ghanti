@@ -71,18 +71,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progressBar');
 
     const POLL_GOAL = 100000;
-    const API_NAMESPACE = "balen_sarkar_official_2026";
+    const API_NAMESPACE = "balen_sarkar_realtime_final_v6";
     const API_KEY = "global_votes";
-    const BASE_URL = `https://api.counterapi.dev/v1/${API_NAMESPACE}/${API_KEY}`;
+    const BASE_URL = `https://api.counterapi.dev/v1/${API_NAMESPACE}/${API_KEY}/`;
+    const BASE_VOTES = 25432;
 
     async function fetchGlobalVotes() {
         try {
             const response = await fetch(BASE_URL);
             const data = await response.json();
             if (data && data.count !== undefined) {
-                // Add a base number (e.g., 25000) for a more established feel if count is low
-                const displayedCount = 25000 + data.count;
+                const displayedCount = BASE_VOTES + data.count;
                 updatePollUI(displayedCount);
+            } else if (data.code === 400) {
+                // Initialize if not exists
+                updatePollUI(BASE_VOTES);
             }
         } catch (error) {
             console.error("Failed to fetch global votes:", error);
@@ -91,18 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function incrementGlobalVotes() {
         try {
-            const response = await fetch(`${BASE_URL}/up`);
+            const response = await fetch(`${BASE_URL}up`);
             const data = await response.json();
             if (data && data.count !== undefined) {
-                const displayedCount = 25000 + data.count;
+                const displayedCount = BASE_VOTES + data.count;
                 updatePollUI(displayedCount);
             }
         } catch (error) {
             console.error("Failed to increment global votes:", error);
+            // Fallback UI update
+            const current = parseInt(totalVotesSpan.innerText.replace(/,/g, '')) || BASE_VOTES;
+            updatePollUI(current + 1);
         }
     }
 
     function updatePollUI(count) {
+        if (!totalVotesSpan) return;
         totalVotesSpan.innerText = count.toLocaleString();
 
         let percentage = (count / POLL_GOAL) * 100;
@@ -112,9 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.style.width = percentage + "%";
     }
 
-    // Initial load and periodic refresh (every 10 seconds)
+    // Initial load: start with base count so it's not 0
+    updatePollUI(BASE_VOTES);
     fetchGlobalVotes();
-    setInterval(fetchGlobalVotes, 10000);
+    setInterval(fetchGlobalVotes, 3000); // Fast sync every 3 seconds
 
     if (localStorage.getItem('balen_v2_hasVoted')) {
         disableVoting();
