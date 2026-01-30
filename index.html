@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balen Sarkar - Jay Ghanti</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>राष्ट्रिय स्वतन्त्र पार्टी</h1>
+        </header>
+        <div class="content-wrapper">
+            <a href="https://www.facebook.com/balenOfficial" target="_blank" class="photo-link">
+                <div class="photo-container left">
+                    <img src="balen_shah.png" alt="Balen Shah" class="portrait">
+                </div>
+            </a>
+
+            <button id="bellButton" class="bell-button">
+                <div class="bell-content">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.37 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.63 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z"
+                            fill="#3498db" />
+                    </svg>
+                    <span class="click-text">Click on Bell</span>
+                </div>
+            </button>
+
+            <a href="https://www.facebook.com/rabi.nikitalamichhane" target="_blank" class="photo-link">
+                <div class="photo-container right">
+                    <img src="rabi_lamichhane.png" alt="Rabi Lamichhane" class="portrait">
+                </div>
+            </a>
+        </div>
+
+        <div class="poll-section">
+            <div class="poll-card">
+                <h2>Public Poll</h2>
+                <div class="poll-option">
+                    <span class="option-name">Balen4PM</span>
+                    <div class="party-badge">राष्ट्रिय स्वतन्त्र पार्टी</div>
+                </div>
+                <button id="voteButton" class="vote-button">Vote</button>
+                <div id="pollMessage" class="poll-message hidden">Thank you for voting!</div>
+                <div id="voteCountContainer" class="vote-count">
+                    Total Votes: <span id="totalVotes">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bellSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
