@@ -48,6 +48,12 @@
                 </div>
                 <button id="voteButton" class="vote-button">Vote</button>
                 <div id="pollMessage" class="poll-message hidden">Thank you for voting!</div>
+
+                <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <div class="percentage-text"><span id="totalPercentage">0</span>% Support</div>
+
                 <div id="voteCountContainer" class="vote-count">
                     Total Votes: <span id="totalVotes">0</span>
                 </div>
@@ -55,7 +61,7 @@
         </div>
     </div>
 
-    <audio id="bellSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+    <audio id="bellSound" src="bell.mp3"></audio>
 
     <script src="script.js"></script>
 </body>
